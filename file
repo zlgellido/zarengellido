@@ -1,0 +1,59 @@
+from collections import deque
+
+graph = {
+    "A": ["B", "C", "F"],
+    "B": ["A", "D", "G"],
+    "C": ["A", "D", "E", "F", "G"],
+    "D": ["B", "C", "G"],
+    "E": ["C", "G", "I"],
+    "F": ["A", "C", "H", "I"],
+    "G": ["B", "C", "D", "E", "H"],
+    "H": ["F", "G", "I"],
+    "I": ["E", "F", "H"]
+}
+
+# Task 1: BFS Implementation
+def bfs(graph, start):
+    visited = set([start])
+    queue = deque([start])
+    traversal = []
+
+    while queue:
+        vertex = queue.popleft()
+        traversal.append(vertex)
+        
+        for neighbor in graph[vertex]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+                
+    print(" ".join(traversal))
+
+# Task 2: DFS Implementation
+def dfs(graph, vertex, visited=None):
+    if visited is None:
+        visited = set()
+    
+    visited.add(vertex)
+    print(vertex, end=" ")
+    
+    for neighbor in graph[vertex]:
+        if neighbor not in visited:
+            dfs(graph, neighbor, visited)
+
+print("BFS Traversal:")
+bfs(graph, "A")
+
+print("\nDFS Traversal:")
+dfs(graph, "A")
+print()
+
+"""
+Task 3: Comparison Table
++------------------+-----------------------+-----------------------+
+|                  |          BFS          |          DFS          |
++------------------+-----------------------+-----------------------+
+| Data Structure   | Queue                 | Stack / Recursion     |
+| Traversal Order  | A B C F D G E H I     | A B D C E G H F I     |
++------------------+-----------------------+-----------------------+
+"""
